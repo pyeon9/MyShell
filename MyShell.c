@@ -79,7 +79,7 @@ int main(void)
 	        printf("\n>>프로그램 %s 실행<<\n", tok[k]);
                 ret = execve(tok[k], args, NULL);
                 if (ret < 0) {
-                    fprintf(stderr, "execve failed\n");   
+                    fprintf(stderr, "There is no such program! execve failed\n");   
                     return 1;
                 }
             }
