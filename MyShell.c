@@ -56,9 +56,6 @@ int main(void)
 	}	
 	int n = k;
 	
-	/*for (k = 0; k < n; k++) {
-	    printf("%s\n", tok[k]);
-	}*/
 
 	for (k = 0; k < n; k++) {
             pid = fork();
@@ -76,7 +73,7 @@ int main(void)
                 if (WIFEXITED(status)) {
                     printf("Exit status is %d\n", WEXITSTATUS(status)); 
                 }
-            } // if
+            } 
             else {  /* child */
 	        printf("%c[1;33m",27);
 	        printf("\n>>프로그램 %s 실행<<\n", tok[k]);
@@ -85,8 +82,8 @@ int main(void)
                     fprintf(stderr, "execve failed\n");   
                     return 1;
                 }
-            } // else
-	} // pid 위 for
-    } // while
+            }
+	} 
+    } 
     return 0;
 }
