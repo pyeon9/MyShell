@@ -27,7 +27,10 @@ int main(void)
 	char aa[MAX_LEN_LINE];
         int len;
         
+	printf("%c[1;35m",27);
         printf("%s@%s$ ",getpwuid(getuid())->pw_name,hostname);
+	printf("%c[0m",27);
+	    
         s = fgets(command, MAX_LEN_LINE, stdin);
 
         if (s == NULL) {
