@@ -9,6 +9,10 @@
 
 #define MAX_LEN_LINE    10
 #define LEN_HOSTNAME	30
+#define COLOR_RED       "\x1b[31m"
+#define COLOR_YELLOW    "\x1b[33m"
+#define COLOR_PURPLE    "\x1b[35m"
+#define COLOR_RESET     "\x1b[0m"
 
 int main(void)
 {
@@ -26,11 +30,9 @@ int main(void)
         char *s;
 	char aa[MAX_LEN_LINE];
         int len;
-        
-	printf("%c[1;35m",27);
-        printf("%s@%s$ ",getpwuid(getuid())->pw_name,hostname);
-	printf("%c[0m",27);
-	    
+	
+        printf(COLOR_PURPLE "%s@%s$ " COLOR_RESET, getpwuid(getuid())->pw_name,hostname);
+
         s = fgets(command, MAX_LEN_LINE, stdin);
 
         if (s == NULL) {
@@ -38,7 +40,7 @@ int main(void)
             exit(1);
         }
 	
-	if (strcmp(s,"exit\n") == 0) {
+	else if (strcmp(s,"exit\n") == 0) {
 	    break;
 	}
 
@@ -51,14 +53,12 @@ int main(void)
 
         printf("[%s]\n", command);
 
-
 	k = 0;
-	tok[k] = strtok(args[0], ";, ");
+	tok[k] = strtok(args[0], "; ");
 	while(tok[k]) {
-	    tok[++k] = strtok(NULL, ";, ");
+	    tok[++k] = strtok(NULL, "; ");
 	}	
 	int n = k;
-	
 
 	for (k = 0; k < n; k++) {
             pid = fork();
@@ -71,22 +71,20 @@ int main(void)
                 if (cpid != pid) {
                     fprintf(stderr, "waitpid failed\n");        
                 }
-	        printf("%c[0m",27);
-                printf("\nChild process terminated\n");
+                printf(COLOR_RESET "\nChild process terminated\n");
                 if (WIFEXITED(status)) {
                     printf("Exit status is %d\n", WEXITSTATUS(status)); 
                 }
-            } 
-            else {  /* child */
-	        printf("%c[1;33m",27);
-	        printf("\n>>프로그램 %s 실행<<\n", tok[k]);
+            }
+            else {  /* child */	        
+		printf(COLOR_YELLOW "\n>>프로그램 %s 실행<<\n" COLOR_RESET, tok[k]);
                 ret = execve(tok[k], args, NULL);
-                if (ret < 0) {
-                    fprintf(stderr, "There is no such program! execve failed\n");   
+                if (ret < 0) {	 
+                    fprintf(stderr, COLOR_RED " There is no such program! execve failed\n" COLOR_RESET);
                     return 1;
                 }
             }
 	} 
-    } 
+    }
     return 0;
 }
