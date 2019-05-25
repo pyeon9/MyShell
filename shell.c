@@ -31,7 +31,7 @@ int main(void)
 	char aa[MAX_LEN_LINE];
         int len;
 	
-        printf(COLOR_PURPLE "%s@%s$ " COLOR_RESET, getpwuid(getuid())->pw_name,hostname);
+        printf(COLOR_PURPLE "%s@%s$ " COLOR_RESET, getpwuid(getuid())->pw_name,hostname); // username과 hostname을 보라색으로 출력
 
         s = fgets(command, MAX_LEN_LINE, stdin);
 
@@ -69,7 +69,7 @@ int main(void)
 	}	
 	int n = k;
 
-	for (k = 0; k < n; k++) {
+	for (k = 0; k < n; k++) { // 여러 프로그램 실행 명령시 여러 프로그램 실행
             pid = fork();
             if (pid < 0) {
                 fprintf(stderr, "fork failed\n");
@@ -86,10 +86,10 @@ int main(void)
                 }
             }
             else {  /* child */	        
-		printf(COLOR_YELLOW "\n>>프로그램 %s 실행<<\n" COLOR_RESET, tok[k]); // 실행할 프로그램 출력
+		printf(COLOR_YELLOW "\n>>프로그램 %s 실행<<\n" COLOR_RESET, tok[k]); // 실행할 프로그램 이름 출력(노란색)
                 ret = execve(tok[k], args, NULL);
                 if (ret < 0) {	 
-                    fprintf(stderr, COLOR_RED " There is no such program! execve failed\n" COLOR_RESET); // 해당 프로그램이 없는 경우 안내 메세지 출력
+                    fprintf(stderr, COLOR_RED " There is no such program! execve failed\n" COLOR_RESET); // 해당 프로그램이 없는 경우 안내 메세지 출력(빨간색)
                     return 1;
                 }
             }
